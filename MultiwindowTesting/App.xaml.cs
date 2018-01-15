@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Background;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -30,6 +33,7 @@ namespace MultiwindowTesting
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            Debug.WriteLine("app created");
         }
 
         /// <summary>
@@ -37,8 +41,46 @@ namespace MultiwindowTesting
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
+            bool taskRegistered = false;
+            BackgroundExecutionManager.RemoveAccess();
+            this.Exit();
+            //foreach (var task in BackgroundTaskRegistration.AllTasks)
+            //{
+            //    Debug.WriteLine(task.Value.Name);
+            //    if (task.Value.Name == "RandomNumberPuller")
+            //    {
+            //        taskRegistered = true;
+            //        break;
+            //    }
+            //}
+
+            //if (!taskRegistered)
+            //{
+            //    var builder = new BackgroundTaskBuilder();
+            //    builder.Name = "RandomNumberPuller";
+            //    builder.TaskEntryPoint = "MultiwindowRuntimeComponent.RandomNumberPuller";
+            //    builder.SetTrigger(new SystemTrigger(SystemTriggerType.TimeZoneChange, false));
+            //    //builder.SetTrigger(new TimeTrigger(15, false));
+            //    var requestStatus = await BackgroundExecutionManager.RequestAccessAsync();
+            //    if (requestStatus != BackgroundAccessStatus.DeniedBySystemPolicy ||
+            //        requestStatus != BackgroundAccessStatus.DeniedByUser ||
+            //        requestStatus != BackgroundAccessStatus.Unspecified)
+            //    {
+            //        builder.Register();
+            //    }
+            //}
+
+            var jumpList = await JumpList.LoadCurrentAsync();
+            jumpList.Items.Clear();
+            var testItem = JumpListItem.CreateWithArguments(string.Empty, "Numberwang");
+            testItem.Description = "Hola mi namo is Sanders";
+            jumpList.Items.Add(testItem);
+            await jumpList.SaveAsync();
+
+            Debug.WriteLine("app started");
+
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,

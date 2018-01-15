@@ -31,6 +31,7 @@ namespace MultiwindowTesting
     {
         Random random;
         NumberCruncher numberCruncher;
+        SynchronizationContext synchronizationContext;
 
         public MainPage()
         {
@@ -38,6 +39,7 @@ namespace MultiwindowTesting
             random = new Random();
             numberCruncher = new NumberCruncher();
             numberCruncher.NumberEvent += NumberCruncher_NumberEvent;
+            synchronizationContext = SynchronizationContext.Current;
         }
 
         private async void NumberCruncher_NumberEvent(object sender, NumberEventArgs e)
@@ -50,8 +52,8 @@ namespace MultiwindowTesting
         {
             NumberCruncher.Register(ApplicationView.GetForCurrentView().Id, Window.Current.Dispatcher, numberCruncher);
             UpdateText();
-            ApplicationView.GetForCurrentView().Consolidated += MainPage_Consolidated;
-            CoreApplication.GetCurrentView().CoreWindow.Closed += CoreWindow_Closed;
+            //ApplicationView.GetForCurrentView().Consolidated += MainPage_Consolidated;
+            //CoreApplication.GetCurrentView().CoreWindow.Closed += CoreWindow_Closed;
         }
 
         private void MainPage_Consolidated(ApplicationView sender, ApplicationViewConsolidatedEventArgs args)

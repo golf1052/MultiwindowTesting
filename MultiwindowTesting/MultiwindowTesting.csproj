@@ -136,6 +136,10 @@
       <Project>{ffcfb082-5ead-4b55-8306-a196f77e25b8}</Project>
       <Name>MultiwindowClassLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MultiwindowRuntimeComponent\MultiwindowRuntimeComponent.csproj">
+      <Project>{3a90458e-4244-48a7-a895-a4ecac791d7f}</Project>
+      <Name>MultiwindowRuntimeComponent</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
